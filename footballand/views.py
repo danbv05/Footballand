@@ -87,12 +87,13 @@ def footballand_register(request):
 
 def footballand_login(request):
     def set_up(request):
-        if  request.user.last_login.date() != request.user.previous_login.date():
-            print(f"{request.user.last_login.date()}")
-            print(f"{request.user.previous_login.date()}")
-            print("different day - daily token refreshed")
-            request.user.daily_token_used = False
-            request.user.save()
+        if request.user.last_login:
+            if  request.user.last_login.date() != request.user.previous_login.date():
+                print(f"{request.user.last_login.date()}")
+                print(f"{request.user.previous_login.date()}")
+                print("different day - daily token refreshed")
+                request.user.daily_token_used = False
+                request.user.save()
         else:
             print("SAME day")
         return redirect('index')
