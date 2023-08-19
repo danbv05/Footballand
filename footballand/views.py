@@ -87,7 +87,7 @@ def footballand_register(request):
 
 def footballand_login(request):
     def set_up(request):
-        if request.user.last_login != None:
+        if request.user.last_login is not None:
             if  request.user.last_login.date() != request.user.previous_login.date():
                 print(f"{request.user.last_login.date()}")
                 print(f"{request.user.previous_login.date()}")
