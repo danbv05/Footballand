@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<div class="jumbotron">
+  <div class="container text-center">
+    <h3>Welcome to Footballand App</h3>
+    <!-- <img src="{% static 'plane_images/flightsapp.jpg' %}" alt="My image" width="10%" /> -->
+  </div>
+</div>
+{% if message %}
+<ul class="messages">
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+</ul>
+{% endif %}
+
+{% if user.is_authenticated %}
+<!-- show this if user is logged in-->
+<h3>Hello {{ user.username }}</h3>
+  {% if user.daily_token_used == True %}
+  <p>You have claimed your daily 10 tokens for today already - get another 10 if you login next day!</p>
+  {% else %}
+  <a class="btn btn-dark" href="{% url 'daily_tokens' %}">Get your daily 10 tokens!</a>
+  {% endif %}
+
+<h3>Updates:</h3>
+    {% for win_bet in updated_wins %}
+          <div class="col-sm-3">
+          <span style="color: green;">you have won {{win_bet.profit}} Tokens & Prize vouchers for the game {{win_bet.match}}: match result {{win_bet.match.result_team_1}} - {{win_bet.match.result_team_2}}! Congratiulations!</span>
+          {% empty %}
+          <li>No bets won since last refresh.</li>
+    {% endfor %}
+    {% for lost_bet in updated_losses %}
+          <div class="col-sm-3">
+              <span style="color: red;">Your bet was wrong in the game {{lost_bet.match}}: match result {{win_bet.match.result_team_1}} - {{win_bet.match.result_team_2}}.. Better luck next time!</span>
+      {% empty %}
+      <li>No bets lost since last refresh.</li>
+    {% endfor %}
+    <div><a class="btn btn-dark" href="{% url 'matches' %}">Go betting</a></div>
+    <br>
+    <div><a a class="btn btn-dark" href="{% url 'footballand_logout' %}">Logout</a></div>
+{% else %}
+<!-- show this if user is logged out-->
+<h3>Please login or Register</h3>
+<!-- login form -->
+<h2>Login</h2>
+<form method="POST" action="{% url 'footballand_login' %}">
+  {% csrf_token %} Username <input name="username" /> &nbsp; Password <input name="password" type="password" />
+  <input type="submit" value="Login" />
+</form>
+<br />
+<hr />
+<h2>Register</h2>
+<form method="POST" action="{% url 'footballand_register' %}">
+  {% csrf_token %} Username <input name="username" /> &nbsp; Password <input name="password" type="password" />
+  <input type="submit" value="Register" />
+</form>
+
+<!-- login form end -->
+{% endif %}
+<hr/>
+
+<h1>Footballand</h1>
+<h2>Welcome!</h2>
+{% endblock %}

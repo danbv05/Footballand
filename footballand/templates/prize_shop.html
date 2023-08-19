@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<div class="jumbotron">
+  <div class="container text-center">
+    <h3>Prize shop</h3>
+  </div>
+</div>
+  <h3>Sort options:</h3>
+  <br />
+  <a class="btn btn-dark" href="{% url 'prize_shop' %}" style="display: inline">Recently added (default)</a>
+  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=lowtohigh">Price (lowest -> highest)</a>
+  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=hightolow" style="display: inline">Price (highest -> lowest)</a>
+  <br />
+  <br />
+  <h3>Available prizes:</h3>
+  <br />
+  <div class="row">
+    {% for prize in prizes %}
+    <div class="col-sm-3">
+      <div>
+        <img src="{% static prize.image %}" class="img-responsive" style="max-width: 30%; height: auto; " alt="Image">
+      </div>
+      <p>{{ prize.name }}</p>
+      <div>
+      <span>Price: {{ prize.price }} vouchers</span>
+      <img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="50" alt="Icon" style="display: inline">
+        </div>
+      <form method="POST" action="{% url 'buy_prize' prize.id %}">
+        {% csrf_token %}<input type="submit" value="Buy this prize" class="btn btn-dark"/>
+      </form>
+    </div>
+    {% empty %}
+    <li>No prizes available.</li>
+    {% endfor %}
+  </div>
+</div>
+<br />
+{% endblock %}

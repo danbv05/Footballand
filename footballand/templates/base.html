@@ -1,0 +1,124 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <img src="{% static 'icons/footballand_logo.png' %}" width="100" height="100" alt="Icon" class="nav-icon">
+    {% if user.is_authenticated %}
+    <!-- show this if user is logged in-->
+    <div class="nav-item">
+      <span class="nav-text">Home</span>
+    </div>
+    <ul class="navbar-nav col-sm-2 col-md-2 mr-0">
+      <li class="nav-item text-nowrap">
+        <img src="{% static 'icons/user_icon.png' %}" width="50" height="50" alt="Icon" class="nav-icon">
+        <span class="nav-link" style="display: inline">{{ user.username }}</span>
+    </ul>
+    <ul class="navbar-nav col-sm-2 col-md-2 mr-0">
+      <li class="nav-item text-nowrap">
+        <img src="{% static 'icons/tokens.png' %}" width="100" height="100" alt="Icon" class="nav-icon">
+        <span class="nav-link" style="display: inline">Tokens: {{ user.bet_tokens_amount }}</span>
+    </ul>
+    <ul class="navbar-nav col-sm-2 col-md-2 mr-0">
+      <li class="nav-item text-nowrap">
+        <img src="{% static 'icons/prize_vouchers.png' %}" width="50" height="50" alt="Icon" class="nav-icon">
+        <span class="nav-link" style="display: inline">Prize vouchers: {{ user.prize_vouchers_amount }}</span>
+    </ul>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="{% url 'footballand_logout' %}">Sign out</a>
+      </li>
+    </ul>
+  </nav>
+  {% else %}
+  {% endif %}
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'index' %}" aria-current="page">
+                <span data-feather="home"></span>
+                Home page
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'matches' %}" aria-current="page">
+                <span data-feather="dribbble"></span>
+                Matches
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'show_bets'%}?bets=active" aria-current="page">
+                <span data-feather="calendar"></span>
+                Active bets
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'prize_shop' %}" aria-current="page">
+                <span data-feather="shopping-cart"></span>
+                Prize shop
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'my_profile' %}" aria-current="page">
+                <span data-feather="user"></span>
+                My Profile
+              </a>
+            </li>
+        </div>
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                <button class="btn btn-sm btn-outline-secondary">Export</button>
+              </div>
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                <span data-feather="calendar"></span>
+                This week
+              </button>
+            </div>
+          </div> -->
+        {% block content %} {% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script>
+    $(".nav .nav-link").on("click", function () {
+      $(".nav").find(".active").removeClass("-active");
+      $(this).addClass("-active");
+    });
+  </script>
+  <!-- Icons -->
+  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  <script>
+    feather.replace()
+  </script>
+</body>
+
+</html>

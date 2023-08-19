@@ -1,0 +1,48 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<div class="jumbotron">
+  <div class="container text-center">
+    <h3>Bets</h3>
+  </div>
+</div>
+  {% if past %}
+  <a class="btn btn-dark" href="{% url 'my_profile' %}">Back to my profile</a>
+  <h3>{{ user.username }}'s bet history</h3>
+  <br />
+  {% else %}
+  <h3>{{ user.username }}'s active bets</h3>
+  <br />
+  {% endif %}
+  <div class="row">
+    {% for bet in player_bet %}
+    <div class="col-sm-3">
+      <div>
+        <img src="{% static bet.match.team_1.symbol %}" class="img-responsive" width="auto" height="50" alt="Image">
+        <img src="{% static bet.match.team_2.symbol %}"class="img-responsive"  width="auto" height="50" style="display: inline-block; margin-left: 10px;" alt="Image 2">
+        </div>
+      <p>{{ bet }}</p>
+      <p>Match date: {{ bet.match.date }}</p>
+      {% if past %}
+      <p>Match result: {{ bet.match.result_team_1 }} - {{ bet.match.result_team_2 }}</p>
+      {% endif %}
+      <p><b>Your bet</b>: 
+        {% if bet.prediction == 'draw' %}
+        <p>Prediction: {{ bet.prediction }}</p>
+        {% else %}
+            {% if bet.prediction == 'team_1' %}
+            <p>Prediction: {{ bet.match.team_1.name }}</p>
+            {% else %}
+            <p>Prediction: {{ bet.match.team_2.name }}</p>
+            {% endif %}
+        {% endif %} 
+      <p>Bet tokens: {{ bet.tokens }}</p>
+      {% if past %}
+      <p>{%if bet.profit %} Profit: <span style="color: green;"><strong>{{ bet.profit }} tokens & prize vouchers</strong></span> {% else %} <span style="color: red;"><strong> No profit - you lost the bet</strong></span>{% endif %}</p>
+      {% endif %}
+    </div>
+    {% empty %}
+    <li>No bets available.</li>
+    {% endfor %}
+  </div>
+</div>
+<br />
+{% endblock %}
