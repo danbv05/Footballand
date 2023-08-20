@@ -4,6 +4,7 @@
     <h3>Bets</h3>
   </div>
 </div>
+  <!-- if context contains past key - view players past bets -->
   {% if past %}
   <a class="btn btn-dark" href="{% url 'my_profile' %}">Back to my profile</a>
   <h3>{{ user.username }}'s bet history</h3>
@@ -21,9 +22,11 @@
         </div>
       <p>{{ bet }}</p>
       <p>Match date: {{ bet.match.date }}</p>
+      <!-- if bet is inactve - view past bet's match result (match finished -> bet is inactive) -->
       {% if past %}
       <p>Match result: {{ bet.match.result_team_1 }} - {{ bet.match.result_team_2 }}</p>
       {% endif %}
+      <!-- view player's bet prediction (adjust displayed content) -->
       <p><b>Your bet</b>: 
         {% if bet.prediction == 'draw' %}
         <p>Prediction: {{ bet.prediction }}</p>
@@ -35,6 +38,7 @@
             {% endif %}
         {% endif %} 
       <p>Bet tokens: {{ bet.tokens }}</p>
+      <!-- if bet is inactve - view past bet's profit outcome - winning will be colored in green and losing will be colored in red -->
       {% if past %}
       <p>{%if bet.profit %} Profit: <span style="color: green;"><strong>{{ bet.profit }} tokens & prize vouchers</strong></span> {% else %} <span style="color: red;"><strong> No profit - you lost the bet</strong></span>{% endif %}</p>
       {% endif %}

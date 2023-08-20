@@ -18,7 +18,7 @@ class Player(AbstractUser):
     previous_login = models.DateTimeField(null=True, blank=True)
 
 class League(models.Model):
-    name = models.CharField(max_length=500, default="FC Barcelona", null=False)
+    name = models.CharField(max_length=500, default="La Liga", null=False)
     country = models.CharField(max_length=500, default="FC Barcelona", null=False)
     
     def __str__(self):
@@ -45,9 +45,10 @@ class Match(models.Model):
         related_name='team_2'
     )
     date = models.DateTimeField("Match date: ")
-    win_ratio_team_1 = models.FloatField (default=1, null= False)
-    win_ratio_team_2 = models.FloatField (default=1, null= False)
-    draw_ratio = models.FloatField (default=1, null= False)
+    league = models.ForeignKey(League, null = False, on_delete=models.CASCADE)
+    profit_ratio_team_1_win = models.FloatField (default=1, null= False)
+    profit_ratio_team_2_win = models.FloatField (default=1, null= False)
+    profit_ratio_draw = models.FloatField (default=1, null= False)
     active = models.BooleanField(default=True)  # Set default to True for active items
     result_team_1 = models.IntegerField(null=True, blank=True)
     result_team_2 = models.IntegerField(null=True, blank=True)

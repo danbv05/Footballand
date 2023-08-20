@@ -2,9 +2,9 @@
 <div class="jumbotron">
   <div class="container text-center">
     <h3>Welcome to Footballand App</h3>
-    <!-- <img src="{% static 'plane_images/flightsapp.jpg' %}" alt="My image" width="10%" /> -->
   </div>
 </div>
+<!-- error/sucess messages -->
 {% if message %}
 <ul class="messages">
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -14,12 +14,13 @@
 {% if user.is_authenticated %}
 <!-- show this if user is logged in-->
 <h3>Hello {{ user.username }}</h3>
+  <!-- if player has logged in for the first time during the current day (utc time) - enable him to claim 10 free tokens (app's bet currency) -->
   {% if user.daily_token_used == True %}
   <p>You have claimed your daily 10 tokens for today already - get another 10 if you login next day!</p>
   {% else %}
   <a class="btn btn-dark" href="{% url 'daily_tokens' %}">Get your daily 10 tokens!</a>
   {% endif %}
-
+<!-- for newly finished matches - if player had a bet on these matches, updates player regarding all new finished bets' outcomes when he logs in -->
 <h3>Updates:</h3>
     {% for win_bet in updated_wins %}
           <div class="col-sm-3">

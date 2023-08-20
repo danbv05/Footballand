@@ -6,19 +6,23 @@
   </div>
 </div>
 <div>
+  <!-- display back button if search operation was requested or player is filtering/sorting searched results -->
   {% if search or searchsort %}
   <a class="btn btn-dark" href="{% url 'matches' %}?view=all">Back to all matches</a>
   {% endif %}
+  <!-- search option -->
   <form method="GET" action="{% url 'matches' %}">
     Search a match by team:<input name="search" />
     <input type="submit" value="Search by name" class="btn btn-dark" />
   </form>
+  <!-- filter by league / view results for all leagues -->
   <h3>Additional filters {% if search or searchsort %} - "{{search}}{{searchsort}}" results{% endif %}:</h3>
   <br />
   <a class="btn btn-dark" href="{% url 'sort_results' %}{% if search or searchsort%}?search={{search}}{{searchsort}}{% endif %}">All leagues</a>
   <a class="btn btn-dark" href="{% url 'sort_results' %}?league=La Liga{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">La Liga</a>
   <a class="btn btn-dark" href="{% url 'sort_results' %}?league=English League{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">English League</a>
   <br />
+  <!-- sort by dates / default sort -->
   <h3>Sort options {% if search or searchsort %} - "{{search}}{{searchsort}}" results{% endif %}:</h3>
   <br />
   <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=recentadded{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Recently added (default)</a>
@@ -40,14 +44,16 @@
       <form method="POST" action="{% url 'bet_match' match.id %}">
         {% csrf_token %} Bet tokens:<input name="token" /><br>
         <label>Predict result:</label><br>
+        <!-- default check for 1st option for generic initial choice -->
+        <!-- displays each option win ratio profit next to label -->
         <input type="radio" id="team_1" name="Predict_result" value="team_1" checked>
-        <label for="team_1"><strong>{{ match.team_1.name }} wins</strong> -> X {{ match.win_ratio_team_1 }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br>
+        <label for="team_1"><strong>{{ match.team_1.name }} wins</strong> -> X {{ match.profit_ratio_team_1_win }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br>
         
         <input type="radio" id="team_2" name="Predict_result" value="team_2">
-        <label for="team_2"><strong>{{ match.team_2.name }} wins</strong> -> X {{ match.win_ratio_team_2 }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br>
+        <label for="team_2"><strong>{{ match.team_2.name }} wins</strong> -> X {{ match.profit_ratio_team_2_win }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br>
         
         <input type="radio" id="draw" name="Predict_result" value="draw">
-        <label for="draw"> <strong> Draw</strong> -> X {{ match.draw_ratio }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br><br>
+        <label for="draw"> <strong> Draw</strong> -> X {{ match.profit_ratio_draw }}<img src="{% static 'icons/prize_vouchers.png' %}" width="auto" height="30" alt="Icon" style="display: inline"> & <img src="{% static 'icons/tokens.png' %}" width="auto" height="30" alt="Icon" style="display: inline">profit</label><br><br>
         <input type="submit" value="Bet match" class="btn btn-dark"/>
       </form>
     </div>

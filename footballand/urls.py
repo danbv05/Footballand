@@ -1,7 +1,7 @@
 from django.urls import path
 
 from footballand import views
-
+#urls for the app
 urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.footballand_register, name='footballand_register'),
