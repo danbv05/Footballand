@@ -40,7 +40,7 @@
       </div>
       <p>{{ match }}</p>
       <p>Date:<span id="dateDisplay">{{ match.date }}</span></p>
-      <p> League: {{match.team_1.league}}</p>
+      <p> League: {{match.league}}</p>
       <form method="POST" action="{% url 'bet_match' match.id %}">
         {% csrf_token %} Bet tokens:<input name="token" /><br>
         <label>Predict result:</label><br>

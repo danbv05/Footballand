@@ -331,7 +331,7 @@ def sort_results(request):
     all_matches = Match.objects.filter(active=True)
     #filtering matches according to desired league if requested
     if league_filter:
-        all_matches = all_matches.filter(team_1__league__name = league_filter)
+        all_matches = all_matches.filter(league__name = league_filter)
     #applying search layer for filters & sorts if desired by player - e.g "ar" search will filter games for "arsenal" and "barcelona.. (explanation continues next line)
     #(example continues) ..however applying "english league" filter will display only results for "arsenal" given the searched string mentioned above
     if searched_sort:

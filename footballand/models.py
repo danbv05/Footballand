@@ -19,7 +19,6 @@ class Player(AbstractUser):
 
 class League(models.Model):
     name = models.CharField(max_length=500, default="La Liga", null=False)
-    country = models.CharField(max_length=500, default="FC Barcelona", null=False)
     
     def __str__(self):
         return f"{self.name}"
@@ -27,8 +26,6 @@ class League(models.Model):
 class Footballteam(models.Model):
     name = models.CharField(max_length=500, default="FC Barcelona", null=False)
     symbol = models.ImageField(upload_to="teams_symbols", default="https://loremflickr.com/cache/resized/3849_14857076316_4e420c7870_n_320_240_nofilter.jpg")
-    league = models.ForeignKey(League, null = False, on_delete=models.CASCADE)
-    table_position = models.IntegerField(default=1, null= False)
 
     def __str__(self):
         return f"{self.name}"
