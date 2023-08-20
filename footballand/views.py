@@ -92,7 +92,7 @@ def index(request):
     if request.user.is_authenticated:
         print("logged in - reading context")
         #update match status for active matches which reached the game date 
-        update_match_status()
+        update_match_status(request)
         #update resulted matches relevant to current player (update player if he won or lost his bets for matches that ended)
         context = update_results(request)
         print("context updated")
@@ -113,7 +113,7 @@ def daily_tokens(request):
 
 #update match status - update match resulted for active matches which reached the game date 
 @login_required
-def update_match_status():
+def update_match_status(request):
     #get all acrive matches
     all_active_matches = Match.objects.filter(active = True)
     for match in all_active_matches:
@@ -220,7 +220,7 @@ def update_results(request):
 @login_required
 def matches(request):
     ## upon entering matches view, update match status to so only matches with a date that hasn't passed yet will remain
-    update_match_status()
+    update_match_status(request)
     shown_matches = Match.objects.filter(active = True)
     #get search string 
     search_str = request.GET.get('search')
