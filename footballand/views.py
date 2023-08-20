@@ -84,7 +84,6 @@ def footballand_logout(request):
     logout(request)
     return redirect('index')
 
-
 #### index function - 
 def index(request):
     context ={}

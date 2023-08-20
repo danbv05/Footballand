@@ -1,16 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from enum import Enum
-from django.utils import timezone
-# Create your models here.
-# class Leagues(Enum):
-#     La_Liga = 1
-#     Premier_League = 2
-#     Serie_A= 3
-#     Bundes_Liga = 4
-#     Ligue_1 = 5
-#     Ligat_Al = 6
 
+#Player class - abstract class of django user
+#bet_tokens_amount - currency for betting matches
+#prize_vouchers_amount - currency for buying prizes
+#daily_token_used - boolean indicating if player has claimed free tokens once a day
+#previous_login - datetime field saving previous session login time
 class Player(AbstractUser):
     bet_tokens_amount = models.IntegerField(null=False, default=500)
     prize_vouchers_amount = models.IntegerField(null=False, default=0)
@@ -29,7 +24,14 @@ class Footballteam(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-
+    
+#Match class - containing match attributes
+#profit_ratio - sets profit ratio for player (tokens & prize vouchers) for each outcome(team 1 wins, team 2 wins, draw)
+#if player prediction was right - he recieves tokens & prize voucher by the formula: {bet tokens}*{profit ratio}
+# e.g for profit ratio - team 1 profit X2, team 2 profit X4, draw profit X3
+# continue e.g - if player bet 100 tokens on team 2 and they won - player recieves 400 tokens & prize vouchers
+#result_team_1 + result_team_2 combined form the match result: e.g Liverpool (team_1) vs Chelsea(team_2) 4-0 
+#"active" attribute - if TRUE, indicates the match hasn't been placed yet
 class Match(models.Model):
     team_1 = models.ForeignKey(
     Footballteam,
@@ -46,7 +48,7 @@ class Match(models.Model):
     profit_ratio_team_1_win = models.FloatField (default=1, null= False)
     profit_ratio_team_2_win = models.FloatField (default=1, null= False)
     profit_ratio_draw = models.FloatField (default=1, null= False)
-    active = models.BooleanField(default=True)  # Set default to True for active items
+    active = models.BooleanField(default=True)
     result_team_1 = models.IntegerField(null=True, blank=True)
     result_team_2 = models.IntegerField(null=True, blank=True)
     def clean(self):
@@ -56,6 +58,9 @@ class Match(models.Model):
     def __str__(self):
         return f"{self.team_1} VS {self.team_2}"
 
+#Bet class - bet object for each bet a player has made (each bet is for a specific match)
+#"active" attribute - if TRUE, indicates the bet wasn't concluded yet
+#profit - amount of tokens & prize vouchers the player has earned if he won the bet
 class Bet(models.Model):
     player = models.ForeignKey(Player, null = False, on_delete=models.CASCADE)
     match = models.ForeignKey(Match, null = False, on_delete=models.CASCADE)
