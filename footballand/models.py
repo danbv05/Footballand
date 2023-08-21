@@ -27,7 +27,8 @@ class Footballteam(models.Model):
         return f"{self.name}"
     
 #Match class - containing match attributes
-#profit_ratio - sets profit ratio for player (tokens & prize vouchers) for each outcome(team 1 wins, team 2 wins, draw) - profit must be bigger than 1
+#profit_ratio - sets profit ratio for player (tokens & prize vouchers) for each outcome(team 1 wins, team 2 wins, draw)
+# profit must be bigger than 1
 #if player prediction was right - he recieves tokens & prize voucher by the formula: {bet tokens}*{profit ratio}
 # e.g for profit ratio - team 1 profit X2, team 2 profit X4, draw profit X3
 # continue e.g - if player bet 100 tokens on team 2 and they won - player recieves 400 tokens & prize vouchers
