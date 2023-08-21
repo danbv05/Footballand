@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 
 #Player class - abstract class of django user
 #bet_tokens_amount - currency for betting matches
@@ -53,7 +54,7 @@ class Match(models.Model):
     result_team_2 = models.IntegerField(null=True, blank=True)
     def clean(self):
         if self.team_1 == self.team_2:
-            raise models.ValidationError("Both teams cannot be the same.")
+            raise ValidationError("Both teams cannot be the same.")
 
     def __str__(self):
         return f"{self.team_1} VS {self.team_2}"

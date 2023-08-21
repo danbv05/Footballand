@@ -21,6 +21,7 @@
   <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}{% if search or searchsort%}?search={{search}}{{searchsort}}{% endif %}">All leagues</a>
   <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?league=La Liga{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">La Liga</a>
   <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?league=English League{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">English League</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?league=Champions League{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Champions League</a>
   <br />
   <!-- sort by dates / default sort -->
   <h3>Sort options {% if search or searchsort %} - "{{search}}{{searchsort}}" results{% endif %}:</h3>
