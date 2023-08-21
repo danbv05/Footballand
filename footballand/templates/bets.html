@@ -4,7 +4,7 @@
     <h3>Bets</h3>
   </div>
 </div>
-  <!-- if context contains past key - view players past bets -->
+  <!-- if context contains 'past' key - view players past bets -->
   {% if past %}
   <a class="btn btn-dark" href="{% url 'my_profile' %}">Back to my profile</a>
   <h3>{{ user.username }}'s bet history</h3>
