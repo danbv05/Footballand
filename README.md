@@ -9,6 +9,7 @@
 1. This project is a football games betting game app
 2. Each play bet football matches with personal ingame currency (virtual tokens - not real money)
 3. Predictions are only for match outcome - team 1 wins, team 2 wins, or a draw between team 1 and team 2
+4. Each match result will be calculated when match date arrives/when admin updates match results manually 
 4. By winning bets the player earns more tokens and another ingame currency called "Prize vouchers" - this currency lets the user buy prizes from the app's prize shop 
 5. App's admin adds matches and prizes from django admin's feature
 
