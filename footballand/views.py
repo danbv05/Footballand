@@ -30,13 +30,11 @@ def footballand_register(request):
             if len(password) < 1:
                 error_message = f"No password entered - enter a password of 1 character at least"
                 return render(request, 'index.html', {'message': error_message})
-            print(f"username={username}. passowrd={password}")    
             user = User.objects.create_user(username, "", password)
             user.save()
             success_message = f"The user {username} has been created successfully!"
             return render(request, 'index.html', {'message': success_message})
     except Exception as e:
-        print(f"*** Error occured:{e}")
         exception_str = str(e)
         #catching the exception of unique username failure (register a username which is already taken) and display it
         if exception_str == "UNIQUE constraint failed: footballand_player.username":
@@ -52,33 +50,23 @@ def footballand_login(request):
             #checks if previous login date is different than current login date (built in user model has this attribute - called last_login)
             #if so - free daily tokens where not used yet
             if  request.user.last_login.date() != request.user.previous_login.date():
-                print(f"{request.user.last_login.date()}")
-                print(f"{request.user.previous_login.date()}")
-                print("different day - daily token refreshed")
                 request.user.daily_token_used = False
                 request.user.save()
         else:
-            print("SAME day")
+            pass
         #redirect to index page after log in set-up
         return redirect('index')
-    print("login function entered !!!!!!!!!!!!")
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(f"username={username}. passowrd={password}")
-
         # Authenticate the user - validating user password. return user object if valid
         user = authenticate(request, username=username, password=password)
-        print(f"authenticate passed. user is:{user}")
-
         if user is not None:
             # If the credentials are correct, log in the user
             login(request, user)
-            print(f"** login passed. user is:{user}")
             #while logging in - initiate set up proccess for user
             return set_up(request)
         else:
-            print(f"!! error login. user is:{user}")
             # If authentication fails, show an error message or redirect back to the login page
             error_message = "Invalid credentials. Please try again."
             return render(request, 'index.html', {'message': error_message})
@@ -88,7 +76,6 @@ def footballand_login(request):
 ##### logout
 @login_required
 def footballand_logout(request):
-    print("logout function entered !!!!!!!!!!!!")
     #saves the logged out session start date (the log in date) for next log in 
     request.user.previous_login = request.user.last_login
     request.user.save()
@@ -100,13 +87,10 @@ def index(request):
     context ={}
     #shows content only if for authenticated player (logged in)
     if request.user.is_authenticated:
-        print("logged in - reading context")
         #update match status for active matches which reached the game date 
         update_match_status(request)
         #update resulted matches relevant to current player (update player if he won or lost his bets for matches that ended)
         context = update_results(request)
-        print("context updated")
-    print(f"context is:{context}")
     return render(request, 'index.html', context)
 
 ##### daily token - update token amount for player (once a day -accessed from home page)
@@ -118,7 +102,6 @@ def daily_tokens(request):
         request.user.save()
     else:
         pass
-    print(f"{request.user.daily_token_used}")
     return render(request, 'index.html')
 
 ##### update_match_status - update match resulted for active matches which reached the game date 
@@ -128,9 +111,6 @@ def update_match_status(request):
     #get all active matches
     all_active_matches = Match.objects.filter(active = True)
     for match in all_active_matches:
-        print(f"{datetime.now().replace(tzinfo=timezone.utc)}")
-        print(f"{match.date}")
-        print(f"***match {match.id} date has passed: {datetime.now().replace(tzinfo=timezone.utc) >= match.date}****")
         #checks if match date has passed - if so randomize result according to result likelyhood (the less the profit is, the more likely the outcome will happen)
         if((datetime.now().replace(tzinfo=timezone.utc) >= match.date) and match.active == True):
             choices = ["team 1 wins", "team 2 wins", "draw"]
@@ -176,13 +156,10 @@ def update_results(request):
     win_bets = []
     lost_bets = []
     for updated_bet in updated_bets:
-        print(f"{updated_bet.prediction}")
         #team 1 won outcome
         if(updated_bet.match.result_team_1 > updated_bet.match.result_team_2):
-            print(f"team 1 wins")
             if(updated_bet.prediction == "team_1"):
                 profit = math.floor(updated_bet.match.profit_ratio_team_1_win * updated_bet.tokens)
-                print(f"profit is {profit}")
                 updated_bet.profit = profit
                 request.user.bet_tokens_amount += profit
                 request.user.prize_vouchers_amount += profit
@@ -191,13 +168,10 @@ def update_results(request):
                 lost_bets.append(updated_bet)
         #team 2 won outcome
         elif(updated_bet.match.result_team_1 < updated_bet.match.result_team_2):
-            print(f"team 2 wins")
             if(updated_bet.prediction == "team_2"):
                 profit = math.floor(updated_bet.match.profit_ratio_team_2_win * updated_bet.tokens)
-                print(f"profit is {profit}")
                 updated_bet.profit = profit
                 request.user.bet_tokens_amount += profit
-                print(f"updated tokens are {request.user.bet_tokens_amount}")
                 request.user.prize_vouchers_amount += profit
                 win_bets.append(updated_bet)
             else:
@@ -212,8 +186,6 @@ def update_results(request):
                 win_bets.append(updated_bet)
             else:
                 lost_bets.append(updated_bet)
-        print(f"wins bet: {win_bets}")
-        print(f"lost bet: {lost_bets}")
         #make bet incative after concluding it
         updated_bet.active=False
         updated_bet.save()
@@ -235,9 +207,7 @@ def matches(request):
     search_str = request.GET.get('search')
     #if theres search string - filter matches that contains the search (contained in team 1's name or team 2's name)
     if search_str:
-        print(f"*****{search_str}#######")
         shown_matches = shown_matches.filter(Q(team_1__name__contains=search_str)|Q(team_2__name__contains=search_str))
-        print(shown_matches)
     context = {
         'matches': shown_matches,  # Replace 'data' with the data you want to pass to the template
         'search': search_str
@@ -248,10 +218,8 @@ def matches(request):
 #update player's tokens amount and saves database
 @login_required
 def bet_match(request, match_id):
-    print("********ENTERED BET MATCH******")
     #get match by match's id
     curr_match = Match.objects.get(id=match_id)
-    print(curr_match)
     #get all player's past bets
     player_bets = Bet.objects.filter(player=request.user)
     #checks if bet was already made for the desired match - a player cannot bet on a match more than once
@@ -274,17 +242,13 @@ def bet_match(request, match_id):
             return render(request, 'index.html', {'message': error_message})
         #validate bet amount does not go above maximum allowed (player's current total tokens)
         if (bet_tokens > request.user.bet_tokens_amount):
-            print(f"!! error betting. entered {bet_tokens} while maximum amount is:{request.user.bet_tokens_amount}")
             error_message = f"you entered {bet_tokens} tokens while your current maximum amount is: {request.user.bet_tokens_amount}\n Please try again"
             return render(request, 'index.html', {'message': error_message})
         #if bet is valid - reduce player's token amount left after the bet and get player's prediction
         else:
-            print("NUMBER IS", bet_tokens)
             request.user.bet_tokens_amount = request.user.bet_tokens_amount - bet_tokens
             request.user.save()
-            print(f"current number of tokens for {request.user.username} is: {request.user.bet_tokens_amount}") 
             player_predict = request.POST.get('Predict_result')
-            print("PREDICTION IS", player_predict)
     Bet.objects.create(player=request.user, match=curr_match,tokens=bet_tokens, prediction=player_predict)
     success_message = f"Your bet of {bet_tokens} tokens was completed successfully!"
     return render(request, 'index.html', {'message': success_message})
@@ -294,7 +258,6 @@ def bet_match(request, match_id):
 def show_bets(request):
     #bet type recieved from a query search - either "active" or "past"
     bet_type = request.GET.get('bets')
-    print(f"{bet_type}")
     #creates an indicator variable for past type bets
     past = None
     win_rate_ratio = None
@@ -316,7 +279,6 @@ def show_bets(request):
         'total_bets': len(shown_bets),
         'win_rate': f"{win_rate_ratio}%"
     }
-    print(f"{context}")
     return render(request, 'bets.html', context)  
 
 ######### my_profile - filter player's owened prized for displaying them in personal player profile's html page
@@ -326,7 +288,6 @@ def my_profile(request):
     context = {
         'prizes': my_prizes
     }
-    print(f"prize context is:{context}")
     return render(request, 'my_profile.html', context)
 
 ###### prize_shop - displays prizes available for purchasing (prizes not owned by any player currently) in the prize shop html page
@@ -336,7 +297,6 @@ def prize_shop(request):
     context = {
         'prizes': all_prizes
     }
-    print(f"prize context is:{context}")
     return render(request, 'prize_shop.html', context)
 
 ###### sorts_and_filters - a general function for sorting and filtering matches and prizes according to general query searches
@@ -386,36 +346,29 @@ def sorts_and_filters(request):
         'searchsort': searched_sort,
         'filter': league_filter
     }
-    print(f"{context}")
     return render(request, 'matches.html', context)
 
 ####### buy_prize - proccesses prize object purchesed by player via prize shop and updates it as owned by the player
 #in addition, updates "prize vouchers" amount for player (the app's resource for buying prizes)
 @login_required
 def buy_prize(request, prize_id):
-    print(f"prize is: {prize_id}")
     prize = Prize.objects.get(id=prize_id)
-    print(f"prize is: {prize}")
     #apply purchasing only by POST method
     if request.method == 'POST':
         #checks if the use has enough ptize vouchers to but the prize
         if (prize.price > request.user.prize_vouchers_amount):
-            print(f"!! error buying. price is {prize.price} while maximum amount you have is: {request.user.prize_vouchers_amount}")
             # maximum prize vouchers amount exceeds - notify the player in home page and cancels purchase
             error_message = f"price is {prize.price} vouchers while maximum amount you have is: {request.user.prize_vouchers_amount}\n Please try again"
             return render(request, 'index.html', {'message': error_message})
         #proceeds with purchase player has sufficient prize vouchers for desired prize
         else:
             prize.owner = request.user
-            print(f"Owner of {prize.name} is {prize.owner}")
             prize.save()
             request.user.prize_vouchers_amount = request.user.prize_vouchers_amount - prize.price
             request.user.save()
-            print(f"current number of price vouchers for {request.user.username} is: {request.user.prize_vouchers_amount}")
             owned_prizes = Prize.objects.filter(owner=request.user) 
     #rendering players profile for viewing the new purchased prize
     context = {
         'prizes': owned_prizes
     }
-    print(f"prize context is:{context}")
     return render(request, 'my_profile.html', context)
