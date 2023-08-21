@@ -26,9 +26,14 @@
         </div>
       <p>{{ bet }}</p>
       <p>Match date: {{ bet.match.date }}</p>
+      <p>League: {{ bet.match.league }}</p>
       <!-- if bet is inactve - view past bet's match result (match finished -> bet is inactive) -->
       {% if past %}
-      <p>Match result: {{ bet.match.result_team_1 }} - {{ bet.match.result_team_2 }}</p>
+      <p>Match result: {{ bet.match.result_team_1 }} - {{ bet.match.result_team_2 }}
+        ({% if bet.match.result_team_1 > bet.match.result_team_2 %} {{bet.match.team_1}} won {% endif %}
+        {% if bet.match.result_team_2 > bet.match.result_team_1 %} {{bet.match.team_2}} won {% endif %}
+        {% if bet.match.result_team_1 == bet.match.result_team_2 %} Draw {% endif %})
+      </p>
       {% endif %}
       <!-- view player's bet prediction (adjust displayed content) -->
       <p><b>Your bet</b>: 

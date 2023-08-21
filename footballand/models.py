@@ -27,7 +27,7 @@ class Footballteam(models.Model):
         return f"{self.name}"
     
 #Match class - containing match attributes
-#profit_ratio - sets profit ratio for player (tokens & prize vouchers) for each outcome(team 1 wins, team 2 wins, draw)
+#profit_ratio - sets profit ratio for player (tokens & prize vouchers) for each outcome(team 1 wins, team 2 wins, draw) - profit must be bigger than 1
 #if player prediction was right - he recieves tokens & prize voucher by the formula: {bet tokens}*{profit ratio}
 # e.g for profit ratio - team 1 profit X2, team 2 profit X4, draw profit X3
 # continue e.g - if player bet 100 tokens on team 2 and they won - player recieves 400 tokens & prize vouchers
@@ -55,7 +55,8 @@ class Match(models.Model):
     def clean(self):
         if self.team_1 == self.team_2:
             raise ValidationError("Both teams cannot be the same.")
-
+        if self.profit_ratio_team_1_win <= 1 or self.profit_ratio_team_2_win <= 1 or self.profit_ratio_draw <= 1:
+            raise ValidationError("Profit ratio for each outcome must be greater than 1")
     def __str__(self):
         return f"{self.team_1} VS {self.team_2}"
 
@@ -82,7 +83,10 @@ class Prize(models.Model):
     image = models.ImageField(upload_to="prizes_images", default="https://loremflickr.com/cache/resized/3849_14857076316_4e420c7870_n_320_240_nofilter.jpg")
     price = models.IntegerField(default=100, null=False)
     owner = models.ForeignKey(Player, null = True, blank = True, on_delete=models.CASCADE)
+    def clean(self):
+        if self.price <= 0:
+            raise ValidationError("Price must be a positive number")
     def __str__(self):
         return f"{self.name}"
-
+    
     
