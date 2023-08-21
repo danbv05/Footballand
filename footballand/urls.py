@@ -13,6 +13,6 @@ urlpatterns = [
     path('daily_tokens/', views.daily_tokens, name='daily_tokens'),
     path('bet/<int:match_id>', views.bet_match, name='bet_match'),
     path('prize_shop/', views.prize_shop, name='prize_shop'),
-    path('sort/', views.sort_results, name='sort_results'),
+    path('sort/', views.sorts_and_filters, name='sorts_and_filters'),
     path('buy_prize/<int:prize_id>', views.buy_prize, name='buy_prize'),
 ]

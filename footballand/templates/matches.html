@@ -18,16 +18,16 @@
   <!-- filter by league / view results for all leagues -->
   <h3>Additional filters {% if search or searchsort %} - "{{search}}{{searchsort}}" results{% endif %}:</h3>
   <br />
-  <a class="btn btn-dark" href="{% url 'sort_results' %}{% if search or searchsort%}?search={{search}}{{searchsort}}{% endif %}">All leagues</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?league=La Liga{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">La Liga</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?league=English League{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">English League</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}{% if search or searchsort%}?search={{search}}{{searchsort}}{% endif %}">All leagues</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?league=La Liga{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">La Liga</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?league=English League{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">English League</a>
   <br />
   <!-- sort by dates / default sort -->
   <h3>Sort options {% if search or searchsort %} - "{{search}}{{searchsort}}" results{% endif %}:</h3>
   <br />
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=recentadded{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Recently added (default)</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=soonertolater{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">Sooner dates -> Later dates</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=latertosooner{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Later dates -> Sooner dates</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?sort=recentadded{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Recently added (default)</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?sort=soonertolater{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}">Sooner dates -> Later dates</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?sort=latertosooner{% if filter%}&league={{filter}}{% endif %}{% if search or searchsort%}&search={{search}}{{searchsort}}{% endif %}" style="display: inline">Later dates -> Sooner dates</a>
   <br />
   <h3>Active matches{% if search or searchsort %} containing "{{search}}{{searchsort}}" {% endif %}:</h3>
   <br />

@@ -8,7 +8,11 @@
   {% if past %}
   <a class="btn btn-dark" href="{% url 'my_profile' %}">Back to my profile</a>
   <h3>{{ user.username }}'s bet history</h3>
+  <span><strong>Total finished bets:</strong> {{total_bets}} </span>
   <br />
+  <span><strong>Current win rate:</strong> {{win_rate}} </span>
+  <br />
+  <h4><u>Past bets archive</u></h4>
   {% else %}
   <h3>{{ user.username }}'s active bets</h3>
   <br />

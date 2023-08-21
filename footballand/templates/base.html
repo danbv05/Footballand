@@ -40,7 +40,7 @@
     </ul>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
-        <a class="nav-link" href="{% url 'footballand_logout' %}">Sign out</a>
+        <a class="nav-link" href="{% url 'footballand_logout' %}">Log out</a>
       </li>
     </ul>
   </nav>
@@ -54,31 +54,31 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'index' %}" aria-current="page">
+              <a class="nav-link" href="{% url 'index' %}">
                 <span data-feather="home"></span>
                 Home page
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'matches' %}" aria-current="page">
+              <a class="nav-link" href="{% url 'matches' %}">
                 <span data-feather="dribbble"></span>
                 Matches
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'show_bets'%}?bets=active" aria-current="page">
+              <a class="nav-link" href="{% url 'show_bets'%}?bets=active">
                 <span data-feather="calendar"></span>
                 Active bets
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'prize_shop' %}" aria-current="page">
+              <a class="nav-link" href="{% url 'prize_shop' %}">
                 <span data-feather="shopping-cart"></span>
                 Prize shop
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'my_profile' %}" aria-current="page">
+              <a class="nav-link" href="{% url 'my_profile' %}">
                 <span data-feather="user"></span>
                 My Profile
               </a>
@@ -87,19 +87,6 @@
       </nav>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-        <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                <button class="btn btn-sm btn-outline-secondary">Export</button>
-              </div>
-              <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar"></span>
-                This week
-              </button>
-            </div>
-          </div> -->
         {% block content %} {% endblock %}
       </main>
     </div>
@@ -107,14 +94,7 @@
 
   <!-- Bootstrap core JavaScript
     ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script>
-    $(".nav .nav-link").on("click", function () {
-      $(".nav").find(".active").removeClass("-active");
-      $(this).addClass("-active");
-    });
-  </script>
-  <!-- Icons -->
+  <!-- icons -->
   <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
   <script>
     feather.replace()

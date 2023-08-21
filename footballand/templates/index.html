@@ -1,13 +1,13 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 <div class="jumbotron">
   <div class="container text-center">
-    <h3>Welcome to Footballand App</h3>
+    <h3>Home Page</h3>
   </div>
 </div>
 <!-- error/sucess messages -->
 {% if message %}
 <ul class="messages">
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><strong>{{ message }}</strong></li>
 </ul>
 {% endif %}
 
@@ -30,10 +30,12 @@
     {% endfor %}
     {% for lost_bet in updated_losses %}
           <div class="col-sm-3">
-              <span style="color: red;">Your bet was wrong in the game {{lost_bet.match}}: match result {{win_bet.match.result_team_1}} - {{win_bet.match.result_team_2}}.. Better luck next time!</span>
+              <span style="color: red;">Your bet was wrong in the game {{lost_bet.match}}: match result {{lost_bet.match.result_team_1}} - {{lost_bet.match.result_team_2}}.. Better luck next time!</span>
       {% empty %}
       <li>No bets lost since last refresh.</li>
     {% endfor %}
+    <br>
+    <h4>Quick access:</h4>
     <div><a class="btn btn-dark" href="{% url 'matches' %}">Go betting</a></div>
     <br>
     <div><a a class="btn btn-dark" href="{% url 'footballand_logout' %}">Logout</a></div>
@@ -58,6 +60,6 @@
 {% endif %}
 <hr/>
 
-<h1>Footballand</h1>
-<h2>Welcome!</h2>
+<h1>Footballand - Bet on matches to get prizes!</h1>
+<h2>Dan Ben David , project #2 John Bryce</h2>
 {% endblock %}

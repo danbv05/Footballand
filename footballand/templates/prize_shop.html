@@ -1,14 +1,14 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 <div class="jumbotron">
   <div class="container text-center">
-    <h3>Prize shop</h3>
+    <h3>Prize Shop</h3>
   </div>
 </div>
   <h3>Sort options:</h3>
   <br />
   <a class="btn btn-dark" href="{% url 'prize_shop' %}" style="display: inline">Recently added (default)</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=lowtohigh">Price (lowest -> highest)</a>
-  <a class="btn btn-dark" href="{% url 'sort_results' %}?sort=hightolow" style="display: inline">Price (highest -> lowest)</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?sort=lowtohigh">Price (lowest -> highest)</a>
+  <a class="btn btn-dark" href="{% url 'sorts_and_filters' %}?sort=hightolow" style="display: inline">Price (highest -> lowest)</a>
   <br />
   <br />
   <h3>Available prizes:</h3>
@@ -17,7 +17,7 @@
     {% for prize in prizes %}
     <div class="col-sm-3">
       <div>
-        <img src="{% static prize.image %}" class="img-responsive" style="max-width: 30%; height: auto; " alt="Image">
+        <img src="{% static prize.image %}" class="img-responsive" width="auto" height="50" alt="Image">
       </div>
       <p>{{ prize.name }}</p>
       <div>

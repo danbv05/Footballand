@@ -132,6 +132,7 @@ AUTH_USER_MODEL = "footballand.Player"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Login url to direct non logged users to login page
 LOGIN_URL = 'footballand_login'
 
 # Following settings only make sense on production and may break development environments.
